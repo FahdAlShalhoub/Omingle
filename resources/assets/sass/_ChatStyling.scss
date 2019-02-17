@@ -1,0 +1,62 @@
+.chatBox{
+	        background-color:#343a40;
+			height:100%;
+			width: 100%;
+		}
+
+		.chatLog{
+			@extend .container-fluid;
+			padding-left:0;
+			padding-right:0;
+			overflow-y: scroll;
+            width:100%;
+            height:95%;
+		}
+
+		.chatInput{
+		  @extend .container-fluid;
+		  padding-left:0;
+		  padding-right:0;
+		}
+
+		.chatInput button{
+		  @extend .btn;	
+		  @extend .btn-default;
+		  @extend .col-sm-1;
+		  color:black;
+		
+		}
+
+		.chatInput input{
+			@extend .col-sm-11;
+			color:black;
+			overflow:Hidden;
+			font-size:140%;
+		}
+
+		.yourChatMessage{
+			@extend .col-sm-10;
+			margin-bottom:30px; 
+		}
+		.thierChatMessage{
+			@extend .col-sm-10;
+			margin-bottom:30px; 
+		}
+
+		.yourChatMessage p{
+			font-size:20px; 
+			color: white;
+		}
+
+        .yourChatMessage b{
+			color: red;
+		}
+
+		.thierChatMessage p{
+			font-size:20px; 
+			color:white;
+		}
+
+		 .thierChatMessage b{
+			color:blue;
+		}

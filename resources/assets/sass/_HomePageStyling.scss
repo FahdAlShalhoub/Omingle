@@ -1,0 +1,14 @@
+#welcomeBlock{
+    @extend .jumbotron;
+    @extend .container-fluid;
+    background-color:#343a40;
+    margin-top:20%;
+    text-align: center;
+}
+
+#entryButton{
+    @extend .btn;
+    @extend .btn-default;
+    font-size: 50px;
+    
+}

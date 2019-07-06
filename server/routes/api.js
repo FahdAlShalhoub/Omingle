@@ -15,7 +15,9 @@ router.use(function log(req,res,next){
 
 //Routes
 router.get('/book',(req,res)=>{
-    res.send(reception.book(req.header('uuid')));
+    reception.book(req.header('uuid'))
+    .then(msg=>res.json(msg))
+    .catch(err=>res.json(err));
 });
 
 router.get('/getChannel',(req,res)=>{

@@ -7,7 +7,7 @@ exports.book= async function(uuid)
   let valid = await isValid(uuid);
   
   if(valid){
-    const newBooking=new booking({uuid:uuid,perChannel:sha256('uuid')});
+    const newBooking=new booking({uuid:uuid,perChannel:sha256(uuid)});
     newBooking.save()
     .then(msg=>{
         console.log(msg);

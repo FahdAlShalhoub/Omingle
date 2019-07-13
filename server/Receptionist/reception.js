@@ -38,5 +38,6 @@ async function isValid(uuid)
 
     return valid;
 }
+exports.isValid=isValid;
 
 

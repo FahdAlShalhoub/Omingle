@@ -3,9 +3,15 @@ const reception=require('../Receptionist/reception');
 const mongoose=require('mongoose');
 const uuid=require('uuid/v4');
 
-mongoose.connect('mongodb://localhost/omingle', {useNewUrlParser: true})
-.then()
-.catch(err=>console.log(err));
+before('Create Connection',function(){
+    mongoose.connect('mongodb://localhost/omingle', {useNewUrlParser: true})
+    .then()
+    .catch(err=>console.log(err));
+});
+
+after('Kill Connection',function(){
+    mongoose.disconnect();
+});
 
 describe('isValid',function(){
     it('Should be true if no duplicates',function(done){

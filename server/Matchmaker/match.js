@@ -25,4 +25,4 @@ const matchSchema=new Schema({
     }
 });
 
-module.exports= match=mongoose.model('match',matchSchema);
+module.exports= match=mongoose.model('matches',matchSchema);

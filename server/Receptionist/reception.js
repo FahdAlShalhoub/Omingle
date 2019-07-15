@@ -9,9 +9,7 @@ exports.book= async function(uuid)
   if(valid){
     const newBooking=new booking({uuid:uuid,perChannel:sha256(uuid)});
     newBooking.save()
-    .then(msg=>{
-        console.log(msg);
-    })
+    .then(()=>{})
     .catch(err=>{
         throw new Error(err);
     });

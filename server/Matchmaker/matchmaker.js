@@ -3,19 +3,22 @@ const booking=require('../Receptionist/booking');
 const match=require('./match');
 const sha256=require('sha256');
 
+//Checks if there are enough bookings to run the matchmaking process
 async function checkStatus()
 {
     let status=false;
 
     await booking.find()
           .then(bookings=>{
-            if(bookings.length%2==0) status=true;
+            if(bookings.length%2==0) 
+            status=true;
           })
           .catch(err=>status=err);
     
     return status;
 }
 
+//Takes the array created by makePairs and formats them into matches and saving them
 async function saveMatches(matches)
 {
     let matchModels=[];
@@ -38,21 +41,19 @@ async function saveMatches(matches)
     .then(()=>console.log(''));
 }
 
+//Creates an array of pairs containig bookings randomly
 function makePairs(bookings){
     let pairs=[];
     let elm1;
     let elm2;
     let pair;
-    for(var i=0;i<bookings.length;i++){
+    let numOfIterations=bookings.length/2;
+    for(var i=0;i<numOfIterations;i++){
         elm1=bookings.splice(Math.floor(Math.random()*bookings.length),1)[0];
         elm2=bookings.splice(Math.floor(Math.random()*bookings.length),1)[0];
         pair={elm1,elm2};
         pairs.push(pair);
     }
-    elm1=bookings.splice(Math.floor(Math.random()*bookings.length),1)[0];
-    elm2=bookings.splice(Math.floor(Math.random()*bookings.length),1)[0];
-    pair={elm1,elm2};
-    pairs.push(pair);
     return pairs;
 }
 

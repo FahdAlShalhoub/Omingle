@@ -2,7 +2,7 @@ const booking=require('./booking');
 const sha256=require('sha256');
 
 //Signs the new user to the waiting list. 
-exports.book= async function(uuid)
+async function book(uuid)
 {
   let valid = await isValid(uuid);
   
@@ -19,13 +19,14 @@ exports.book= async function(uuid)
   throw new Error('Duplicate UUID');
 }
 
+//Checks if the submitted uuid is valid
 async function isValid(uuid)
 {
     let valid=false;
 
     await booking.findOne({uuid:uuid})
     .then(book=>{
-       if(book!=null)
+       if(book[0].uuid===uuid)
        valid=false;
        else
        valid=true;
@@ -36,6 +37,10 @@ async function isValid(uuid)
 
     return valid;
 }
-exports.isValid=isValid;
+
+module.exports={
+  isValid,
+  book
+};
 
 

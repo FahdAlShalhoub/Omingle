@@ -16,6 +16,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
+    "sinon": "^7.3.2",
     "nodemon": "^1.18.11"
   },
   "scripts": {

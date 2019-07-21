@@ -20,10 +20,6 @@ router.get('/book',(req,res)=>{
     .catch(err=>res.json(err));
 });
 
-router.get('/getChannel',(req,res)=>{
-    res.send()
-});
-
 router.get('/endChat',(req,res)=>{
     if(reception.isChatting(req.header('uuid'))){
         chatControl.endChat('uuid');

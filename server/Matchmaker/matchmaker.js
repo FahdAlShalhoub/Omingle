@@ -1,4 +1,3 @@
-const mongoose=require('mongoose');
 const booking=require('../Receptionist/booking');
 const match=require('./match');
 const sha256=require('sha256');
@@ -57,9 +56,27 @@ function makePairs(bookings){
     return pairs;
 }
 
+function launch(interval)
+{
+    setInterval(async()=>{
+        var ok=await checkStatus();
+        if(ok){
+            booking.find()
+            .then(bookings=>{
+                pairs=makePairs(bookings);
+                saveMatches(pairs);
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        }
+    }, interval);
+}
+
 module.exports={
     makePairs,
     checkStatus,
-    saveMatches
+    saveMatches,
+    launch
 }
 

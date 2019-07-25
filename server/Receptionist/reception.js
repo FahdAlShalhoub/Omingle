@@ -7,13 +7,14 @@ async function book(uuid)
   let valid = await isValid(uuid);
   
   if(valid){
-    const newBooking=new booking({uuid:uuid,perChannel:sha256(uuid)});
+    const channel=sha256(uuid);
+    const newBooking=new booking({uuid:uuid,perChannel:channel});
     newBooking.save()
     .then(()=>{})
     .catch(err=>{
         throw new Error(err);
     });
-    return 'Saved Successfully';
+    return channel;
   }
 
   throw new Error('Duplicate UUID');

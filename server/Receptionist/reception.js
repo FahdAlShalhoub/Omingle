@@ -16,21 +16,26 @@ async function book(uuid)
     });
     return channel;
   }
-
-  throw new Error('Duplicate UUID');
+  else
+   throw new Error('Duplicate UUID');
 }
 
 //Checks if the submitted uuid is valid
 async function isValid(uuid)
 {
-    let valid=false;
+    let valid;
 
     await booking.findOne({uuid:uuid})
     .then(book=>{
-       if(book[0].uuid===uuid)
-       valid=false;
-       else
-       valid=true;
+      if(book==null){
+        valid=true;
+      }
+      else{
+        if(book.uuid===uuid)
+        valid=false;
+        else
+        valid=true;
+      }
     })
     .catch(err=>{
         throw new Error(err);

@@ -17,7 +17,7 @@ router.use(function log(req,res,next){
 router.get('/book',(req,res)=>{
     reception.book(req.header('uuid'))
     .then(msg=>res.json(msg))
-    .catch(err=>res.json(err));
+    .catch(err=>res.json(err.message));
 });
 
 router.get('/endChat',(req,res)=>{

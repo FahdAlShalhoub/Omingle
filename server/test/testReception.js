@@ -14,7 +14,7 @@ describe('testReception.js',function(){
         });
 
         after('Stub Deletion',function(){
-            sinon.resetBehavior();
+            sinon.restore();
         });
 
         beforeEach('Setting up the save spy',function(){

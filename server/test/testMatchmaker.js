@@ -79,7 +79,7 @@ describe('testMatchmaker.js',function(){
         .resolves(elements);
     });
     after('Stub Deletion',function(){
-      sinon.resetBehavior()
+      sinon.restore();
     });
 
     it('Should return true if number of elements is even',function(done){

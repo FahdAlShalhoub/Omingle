@@ -4,7 +4,7 @@ const booking=require('../Receptionist/booking');
     {
         var result;
         if(! await booking.exists({uuid:uuid})){
-            result = "User Has not made a booking"
+            return "User Has not made a booking"
         }
 
         await booking.findOne({uuid:uuid})

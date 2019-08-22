@@ -20,14 +20,4 @@ router.get('/book',(req,res)=>{
     .catch(err=>res.json(err.message));
 });
 
-router.get('/endChat',(req,res)=>{
-    if(reception.isChatting(req.header('uuid'))){
-        chatControl.endChat('uuid');
-        res.send({msg:'you have disconnected'});
-    }
-    else{
-        res.send({msg:'you are not registered in a chat'});
-    }
-});
-
 module.exports=router;

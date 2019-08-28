@@ -3,32 +3,26 @@ const match=require('../Matchmaker/match');
 //Sends the chat channels to thier respective users through thier private channels
 async function distributeChannels(namespace)
 {
-   if(await !match.exists()){
+   let available=await match.exists();
+   if(!available){
        return 'No public channels to distribute';
    }
 
-   var num=0;
+   let numberOfDistributedChannels=0;
    await match.find()
     .then(matches=>{
-        if(matches.length==undefined){
-            namespace.to(matches.perChannel1).emit('matchFound',matches.chatChannel);
-            namespace.to(matches.perChannel2).emit('matchFound',matches.chatChannel);
-            match.deleteOne({chatChannel:matches.chatChannel});
-            num++;
-        }
-        else
         for(var i=0;i<matches.length;i++){
             namespace.to(matches[i].perChannel1).emit('matchFound',matches[i].chatChannel);
             namespace.to(matches[i].perChannel2).emit('matchFound',matches[i].chatChannel);
             match.deleteOne({chatChannel:matches[i].chatChannel});
-            num++;
+            numberOfDistributedChannels++;
         }
     })
     .catch(err=>{
        throw new Error(err);
     });
 
-    return `Connected ${num} Chat Channels`; 
+    return `Connected ${numberOfDistributedChannels} Chat Channels`; 
 }
 
 function launch(interval,emitter)

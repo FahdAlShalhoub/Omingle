@@ -1,21 +1,5 @@
-const booking=require('../Receptionist/booking');
 const match=require('./match');
 const sha256=require('sha256');
-
-//Checks if there are enough bookings to run the matchmaking process
-async function checkStatus()
-{
-    let status=false;
-
-    await booking.find()
-          .then(bookings=>{
-            if(bookings.length%2==0) 
-            status=true;
-          })
-          .catch(err=>status=err);
-    
-    return status;
-}
 
 //Takes the array created by makePairs and formats them into matches and saving them
 async function saveMatches(matches)
@@ -26,6 +10,7 @@ async function saveMatches(matches)
     let perChannel1;
     let perChannel2;
     let chatChannel;
+    let message;
     for(var i=0;i<matches.length;i++){
         uuid1=matches[i].elm1.uuid;
         uuid2=matches[i].elm2.uuid;
@@ -35,9 +20,11 @@ async function saveMatches(matches)
         var newMatch=new match({uuid1:uuid1,uuid2:uuid2,perChannel1:perChannel1,perChannel2:perChannel2,chatChannel:chatChannel});
         matchModels.push(newMatch);
     }
-
-    match.insertMany(matchModels)
-    .then(()=>console.log(''));
+    
+    await match.insertMany(matchModels)
+    .then(mes=> message=mes)
+    .catch(err=> message=err);
+    return message;
 }
 
 //Creates an array of pairs containig bookings randomly
@@ -56,26 +43,19 @@ function makePairs(bookings){
     return pairs;
 }
 
-function launch(interval)
+async function launch(bookings)
 {
-    setInterval(async()=>{
-        var ok=await checkStatus();
-        if(ok){
-            booking.find()
-            .then(bookings=>{
-                pairs=makePairs(bookings);
-                saveMatches(pairs);
-            })
-            .catch(err=>{
-                console.log(err);
-            })
-        }
-    }, interval);
+    let message;
+    pairs = makePairs(bookings);
+    await saveMatches(pairs)
+    .then(mes => message=mes)
+    .catch(err => message=err);
+    return  message;
+
 }
 
 module.exports={
     makePairs,
-    checkStatus,
     saveMatches,
     launch
 }

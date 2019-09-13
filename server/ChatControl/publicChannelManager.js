@@ -25,23 +25,6 @@ async function distributeChannels(namespace)
     return `Connected ${numberOfDistributedChannels} Chat Channels`; 
 }
 
-function launch(interval,emitter)
-{
-    const namespace=emitter.of('/personalCh');
-
-    setInterval(function(){
-        distributeChannels(namespace)
-        .then(msg=>{
-            console.log(msg);
-        })
-        .catch(err=>{
-            console.log(err);
-        });
-    },interval);
-
-}
-
 module.exports={
-    launch,
     distributeChannels,
 }

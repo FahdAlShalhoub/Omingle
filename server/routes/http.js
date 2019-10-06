@@ -3,8 +3,6 @@ const router=express.Router();
 const reception=require('../Receptionist/reception');
 const public=require('../ChatControl/publicChannelManager');
 const matchmaker=require('../Matchmaker/matchmaker');
-const redis=require('socket.io-redis')({host:'localhost',port:'6379'});
-const emitter=require('socket.io-emitter')({host:'127.0.0.1',port:'6379'});
 
 //MiddleWare
 router.use(function log(req,res,next){
@@ -35,23 +33,47 @@ router.get('/book',(req,res)=>{
 });
 
 router.get('/runMatchmaker',(req,res)=>{
-    matchmaker.launch(req.query.bookings)
-    .then(msg=>{
-        res.send({
-            status:200,
-            message:msg
+    if(req.query.signature != 'hello'){
+        res.status(401).send({
+            msg:'Invalid Signature'
         });
-    })
-    .catch(err=>{
-        res.status(400).send({
-            status:400,
-            message:err.message
+    } else {
+        matchmaker.launch(JSON.parse(req.query.bookings).bookings)
+        .then(msg=>{
+            res.send({
+                status:200,
+                message:msg
+            });
+        })
+        .catch(err=>{
+            res.status(400).send({
+                status:400,
+                message:err.message
+            });
         });
-    });
+    }
 });
 
-router.get('/runPublicChannelDistributer',(req,res)=>{
-    public
+router.get('/runPublicChannelManager',(req,res)=>{
+    if(req.query.signature != 'Hello2'){
+        res.status(401).send({
+            msg:'Invalid Signature'
+        });
+    } else{
+        public.distributeChannels(req.io.of('/chatCh'))
+        .then(msg=>{
+            res.send({
+                status:200,
+                msg:msg
+            });
+        })
+        .catch(err=>{
+            res.status(400).send({
+                status:400,
+                msg:err
+            });
+        });
+    }
 });
 
 module.exports=router;

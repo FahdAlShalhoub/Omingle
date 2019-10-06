@@ -1,7 +1,7 @@
-module.exports = function(http){
-    const io=require('socket.io')(http);
-    const redis=require('socket.io-redis')({host:'localhost',port:'6379'});
-    const emitter=require('socket.io-emitter')({host:'127.0.0.1',port:'6379'});
+module.exports = function(IO,REDIS,EMITTER){
+    const io=IO;
+    const redis=REDIS;
+    const emitter=EMITTER;
     const private=require('../ChatControl/privateChannelManager');
    
     const privateNamespace='/personalCh';

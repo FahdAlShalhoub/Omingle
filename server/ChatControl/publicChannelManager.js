@@ -10,11 +10,11 @@ async function distributeChannels(namespace)
 
    let numberOfDistributedChannels=0;
    await match.find()
-    .then(matches=>{
+    .then(async matches=>{
         for(var i=0;i<matches.length;i++){
             namespace.to(matches[i].perChannel1).emit('matchFound',matches[i].chatChannel);
             namespace.to(matches[i].perChannel2).emit('matchFound',matches[i].chatChannel);
-            match.deleteOne({chatChannel:matches[i].chatChannel});
+            await  match.deleteOne({chatChannel:matches[i].chatChannel});
             numberOfDistributedChannels++;
         }
     })

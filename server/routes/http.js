@@ -1,79 +1,79 @@
-const express =require('express');
-const router=express.Router();
-const reception=require('../Receptionist/reception');
-const public=require('../ChatControl/publicChannelManager');
-const matchmaker=require('../Matchmaker/matchmaker');
+const express = require('express');
+const router = express.Router();
+const reception = require('../Receptionist/reception');
+const publicChannelManager = require('../ChatControl/publicChannelManager');
+const matchmaker = require('../Matchmaker/matchmaker');
 
 //MiddleWare
-router.use(function log(req,res,next){
+router.use(function log(req, res, next) {
     console.log("---------------------------");
-    console.log('Request: '+req.path);
-    console.log("Time: "+new Date().toISOString().replace(/T/,' ').replace(/\..+/, '')); //The Time Is 0 GMT
-    console.log("UUID: "+req.query.uuid);
+    console.log('Request: ' + req.path);
+    console.log("Time: " + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')); //The Time Is 0 GMT
+    console.log("UUID: " + req.query.uuid);
     console.log("---------------------------\n");
     next();
 });
 
 //Routes
-router.get('/book',(req,res)=>{
+router.get('/book', (req, res) => {
     reception.book(req.query.uuid)
-    .then(msg=>{
-        res.send({
-            status:200,
-            message: 'You have been succesfully booked',
-            channel:msg
+        .then(msg => {
+            res.send({
+                status: 200,
+                message: 'You have been successfully booked',
+                channel: msg
+            });
+        })
+        .catch(err => {
+            res.status(400).send({
+                status: 400,
+                message: err.message
+            });
         });
-    })
-    .catch(err=>{
-        res.status(400).send({
-            status:400,
-            message:err.message
-        });
-    });
 });
 
-router.get('/runMatchmaker',(req,res)=>{
-    if(req.query.signature != 'hello'){
+router.get('/runMatchmaker', (req, res) => {
+    if (req.query.signature !== 'hello') {
         res.status(401).send({
-            msg:'Invalid Signature'
+            msg: 'Invalid Signature'
         });
     } else {
         matchmaker.launch(JSON.parse(req.query.bookings).bookings)
-        .then(msg=>{
-            res.send({
-                status:200,
-                message:msg
+            .then(msg => {
+                res.send({
+                    status: 200,
+                    message: msg
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    status: 400,
+                    message: err.message
+                });
             });
-        })
-        .catch(err=>{
-            res.status(400).send({
-                status:400,
-                message:err.message
-            });
-        });
     }
 });
 
-router.get('/runPublicChannelManager',(req,res)=>{
-    if(req.query.signature != 'Hello2'){
+router.get('/runPublicChannelManager', (req, res) => {
+    if (req.query.signature !== 'Hello2') {
         res.status(401).send({
-            msg:'Invalid Signature'
+            msg: 'Invalid Signature'
         });
-    } else{
-        public.distributeChannels(req.io.of('/chatCh'))
-        .then(msg=>{
-            res.send({
-                status:200,
-                msg:msg
+    } else {
+        publicChannelManager.distributeChannels(req.io.of('/chatCh'))
+            .then(msg => {
+                res.send({
+                    status: 200,
+                    msg: msg
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    status: 400,
+                    msg: err
+                });
             });
-        })
-        .catch(err=>{
-            res.status(400).send({
-                status:400,
-                msg:err
-            });
-        });
     }
 });
 
-module.exports=router;
+module.exports = router;

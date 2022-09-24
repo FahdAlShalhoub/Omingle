@@ -1,30 +1,23 @@
-const match=require('../Matchmaker/match');
+const match = require('../Matchmaker/match');
 
-//Sends the chat channels to thier respective users through thier private channels
-async function distributeChannels(namespace)
-{
-   let available=await match.exists();
-   if(!available){
-       return 'No public channels to distribute';
-   }
+//Sends the chat channels to their respective users through their private channels
+async function distributeChannels(namespace) {
+    let available = await match.exists({});
+    if (!available) {
+        return 'No public channels to distribute';
+    }
 
-   let numberOfDistributedChannels=0;
-   await match.find()
-    .then(async matches=>{
-        for(var i=0;i<matches.length;i++){
-            namespace.to(matches[i].perChannel1).emit('matchFound',matches[i].chatChannel);
-            namespace.to(matches[i].perChannel2).emit('matchFound',matches[i].chatChannel);
-            await  match.deleteOne({chatChannel:matches[i].chatChannel});
-            numberOfDistributedChannels++;
-        }
-    })
-    .catch(err=>{
-       throw new Error(err);
-    });
+    const matches = await match.find();
 
-    return `Connected ${numberOfDistributedChannels} Chat Channels`; 
+    await Promise.all(matches.map(match1 => {
+        namespace.to(match1.perChannel1).emit('matchFound', match1.chatChannel);
+        namespace.to(match1.perChannel2).emit('matchFound', match1.chatChannel);
+        return match.deleteOne({chatChannel: match1.chatChannel});
+    }));
+
+    return `Connected ${matches.length} Chat Channels`;
 }
 
-module.exports={
+module.exports = {
     distributeChannels,
 }

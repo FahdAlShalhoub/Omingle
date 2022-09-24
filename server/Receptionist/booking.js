@@ -1,16 +1,16 @@
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 //Creating Schema
-const bookingSchema=new Schema({
-    uuid:{
+const bookingSchema = new Schema({
+    uuid: {
         type: String,
         required: true
     },
-    perChannel:{
+    perChannel: {
         type: String,
-        required:true  
+        required: true
     }
 });
 
-module.exports= booking = mongoose.model('booking',bookingSchema); 
+module.exports = booking = mongoose.model('booking', bookingSchema);

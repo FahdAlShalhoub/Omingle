@@ -1,25 +1,16 @@
-const booking=require('../Receptionist/booking');
+const booking = require('../Receptionist/booking');
 
-    async function addUserToRoom(uuid,socket)
-    {
-        var result;
-        if(! await booking.exists({uuid:uuid})){
-            return "User Has not made a booking"
-        }
-
-        await booking.findOne({uuid:uuid})
-        .then(booking=>{
-            socket.join(booking.perChannel);
-            result = "User has joined the channel";
-        })
-        .catch(err=>{
-            throw new Error(err);
-        });
-
-        return result; 
-    }
-    module.exports={
-        addUserToRoom,
+async function addUserToRoom(uuid, socket) {
+    if (!await booking.exists({uuid: uuid})) {
+        return "User Has not made a booking"
     }
 
+    const booking1 = await booking.findOne({uuid: uuid})
+    socket.join(booking1.perChannel);
 
+    return "User has joined the channel";
+}
+
+module.exports = {
+    addUserToRoom,
+}

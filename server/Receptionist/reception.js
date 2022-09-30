@@ -9,11 +9,11 @@ async function book(uuid) {
         throw new Error('Duplicate UUID');
     }
 
-    const channel = sha256(uuid);
+    const perChannel = sha256(uuid);
 
-    await booking.create({uuid: uuid, perChannel: channel})
+    await booking.create({uuid, perChannel})
 
-    return channel;
+    return perChannel;
 }
 
 module.exports = {

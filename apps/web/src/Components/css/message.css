@@ -1,0 +1,15 @@
+
+  #right{
+    /* background-color: #849dc4; */
+    margin-right: 0.5rem;
+    margin-left:auto ;
+    border-radius: 45px 7.5px 15px 30px;
+}
+
+  #left{
+    /* background-color: #9da3adb7; */
+    margin-right:auto;
+    margin-left: 0.5rem; 
+    border-radius: 15px 30px 45px 7.5px;
+
+}

@@ -1,0 +1,28 @@
+.font1{
+    font-family: 'Handlee', cursive;
+}
+.font2{
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.bg1{
+    background-image: url('../../images/background1.png');
+    background-repeat: repeat;
+
+}
+.bg2{
+    background-image: url('../../images/background2.png');
+    background-repeat: repeat;
+
+}
+.bg3{
+    background-image: url('../../images/background3.png');
+    background-repeat: repeat;
+
+}
+.bg4{
+    background-image: url('../../images/background4.png');
+    background-repeat: repeat;
+
+}

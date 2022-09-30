@@ -1,5 +1,5 @@
 {
-  "name": "expressexample",
+  "name": "server",
   "version": "1.0.0",
   "description": "First Express Project",
   "main": "index.js",
